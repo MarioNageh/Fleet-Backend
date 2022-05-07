@@ -1,64 +1,486 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Fleet Backend
 
-## About Laravel
+this project i build in laravel framework 
+made to make user book up the bus traveling threw defined path way
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+ 
+ 
+## Models
+- City : Station Of Bus Way
+- Bus  : It Include Some Bus Data , driver name , **[Seats Number]
+- User : User Of System
+- Trip : Every Trip Has A Bus , Working Hour , Trip Path
+- Trip Path : Every Trip Has A Way Represented In Trip Path
+- Working Hour : it's defined the day of week and time for each trip
+- Reservation : Every Reservation Has Bus , Trip , Working Hour , User, Bus Seat Location  , start city, end city
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Run 
+    1- First Upload Data Base File  .sql
+    2- Edit .Env File [DB_DATABASE,DB_USERNAME,DB_PASSWORD]
+    3- run 'php artisan serve'
+    
+## Testing 
+    1- run 'php artisan test'
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+#  API
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+## Get list of City
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Request Login
 
-### Premium Partners
+`POst /api/login`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+    curl --location --request POST 'http://127.0.0.1:5050/api/login' \
+    --header 'Content-Type: application/json' \
+    --data-raw '
+    {
+        "password":"123456",
+        "email":"m@mm.com"
+    }'
 
-## Contributing
+### Response
+    {
+        "MessageAr": "تم تسجيل الدخول بنجاح",
+        "MessageEn": "Successful Login",
+        "Code": 200,
+        "Token": "2|dC9tnqrZsoGXddxx8xnHt9GEn8EaWnWCVtwEVMGa"
+    }
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Load City
 
-## Code of Conduct
+### Request
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+`Get /api/city`
 
-## Security Vulnerabilities
+    curl --location --request GET 'http://127.0.0.1:5050/api/city' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer 2|dC9tnqrZsoGXddxx8xnHt9GEn8EaWnWCVtwEVMGa'
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Response
+    {
+        "MessageAr": "تم تحميل البيانات بنجاح",
+        "MessageEn": "Successful Loaded Data",
+        "Code": 200,
+        "Data": [
+            {
+                "IdCity": 1,
+                "CityNameEn": "Cairo",
+                "CityNameAr": "القاهرة"
+            },
+            {
+                "IdCity": 2,
+                "CityNameEn": "Giza",
+                "CityNameAr": "الجيزة"
+            },
+            {
+                "IdCity": 3,
+                "CityNameEn": "Alex",
+                "CityNameAr": "الاسكندرية"
+            },
+            {
+                "IdCity": 4,
+                "CityNameEn": "Alfayum",
+                "CityNameAr": "الفيوم"
+            },
+            {
+                "IdCity": 5,
+                "CityNameEn": "AlMinya",
+                "CityNameAr": "المنيا"
+            },
+            {
+                "IdCity": 6,
+                "CityNameEn": "Asyut",
+                "CityNameAr": "اسيوط"
+            },
+            {
+                "IdCity": 7,
+                "CityNameEn": "Aswan",
+                "CityNameAr": "اسوان"
+            },
+            {
+                "IdCity": 8,
+                "CityNameEn": "Monofeya",
+                "CityNameAr": "المنوفية"
+            }
+        ]
+    }
+    
 
-## License
+## Load trip
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Request
+
+`Get /api/trip`
+
+    curl --location --request GET 'http://127.0.0.1:5050/api/trip' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer 2|dC9tnqrZsoGXddxx8xnHt9GEn8EaWnWCVtwEVMGa'
+
+### Response
+    {
+        "MessageAr": "تم تحميل البيانات بنجاح",
+        "MessageEn": "Successful Loaded Data",
+        "Code": 200,
+        "Data": [
+            {
+                "IdTrip": 1,
+                "TripName": "Cairo-Minya",
+                "IdBus": 2
+            }
+        ]
+    }
+    
+
+
+## Load Bus
+
+### Request
+
+`Get /api/bus`
+
+    curl --location --request GET 'http://127.0.0.1:5050/api/bus' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer 2|dC9tnqrZsoGXddxx8xnHt9GEn8EaWnWCVtwEVMGa'
+
+### Response
+    {
+        "MessageAr": "تم تحميل البيانات بنجاح",
+        "MessageEn": "Successful Loaded Data",
+        "Code": 200,
+        "Data": [
+            {
+                "IdBus": 1,
+                "DriverName": "Magdy",
+                "VehicleRegistrationPlate": "789-GOI",
+                "AvailableSeats": 12
+            },
+            {
+                "IdBus": 2,
+                "DriverName": "Ami",
+                "VehicleRegistrationPlate": "249-MIW",
+                "AvailableSeats": 2
+            }
+        ]
+    }
+
+
+## Load Trip Working Hour
+DayOfWeek  start from 0 Sun ... 6 Sat 
+### Request
+    
+`Get api/tripWorkingHour/{idTrip}`
+
+    curl --location --request GET 'http://127.0.0.1:5050/api/tripWorkingHour/1' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer 2|dC9tnqrZsoGXddxx8xnHt9GEn8EaWnWCVtwEVMGa'
+
+### Response
+    {
+        "MessageAr": "تم تحميل البيانات بنجاح",
+        "MessageEn": "Successful Loaded Data",
+        "Code": 200,
+        "Data": [
+            {
+                "IdWorkingHour": 1,
+                "IdTrip": 1,
+                "DayOfWeek": 0,
+                "TripStatringTime": "18:00:00",
+                "TripEndingTime": "20:00:00"
+            }
+        ]
+    }
+
+
+## Load Trip Path
+This End point help To Get The Trip Path
+### Request
+    
+    curl --location --request GET 'http://127.0.0.1:5050/api/tripPath/1' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer 2|dC9tnqrZsoGXddxx8xnHt9GEn8EaWnWCVtwEVMGa'
+
+### Response
+    {
+        "MessageAr": "تم تحميل البيانات بنجاح",
+        "MessageEn": "Successful Loaded Data",
+        "Code": 200,
+        "Format": "Cairo -------> Alfayum -------> AlMinya -------> Asyut",
+        "Data": [
+            {
+                "IdTripPath": 1,
+                "IdCity": 1,
+                "IdTrip": 1,
+                "Order": 1,
+                "NextIdTripPath": 2,
+                "city": {
+                    "IdCity": 1,
+                    "CityNameEn": "Cairo",
+                    "CityNameAr": "القاهرة"
+                }
+            },
+            {
+                "IdTripPath": 2,
+                "IdCity": 4,
+                "IdTrip": 1,
+                "Order": 2,
+                "NextIdTripPath": 3,
+                "city": {
+                    "IdCity": 4,
+                    "CityNameEn": "Alfayum",
+                    "CityNameAr": "الفيوم"
+                }
+            },
+            {
+                "IdTripPath": 3,
+                "IdCity": 5,
+                "IdTrip": 1,
+                "Order": 3,
+                "NextIdTripPath": 4,
+                "city": {
+                    "IdCity": 5,
+                    "CityNameEn": "AlMinya",
+                    "CityNameAr": "المنيا"
+                }
+            },
+            {
+                "IdTripPath": 4,
+                "IdCity": 6,
+                "IdTrip": 1,
+                "Order": 4,
+                "NextIdTripPath": null,
+                "city": {
+                    "IdCity": 6,
+                    "CityNameEn": "Asyut",
+                    "CityNameAr": "اسيوط"
+                }
+            }
+        ]
+    }
+
+
+
+## Load Available Trips From Start City,End City , Time
+This Will Return all Trips That Have Path From Start to End 
+and there available seat on the bus in this interval on selected date
+will return bus seats 
+### Request
+    
+    curl --location --request GET 'http://127.0.0.1:5050/api/availableTrip/1/4/2022-05-15' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer 2|dC9tnqrZsoGXddxx8xnHt9GEn8EaWnWCVtwEVMGa'
+
+### Response
+    {
+        "MessageAr": "تم تحميل بيانات الرحلات بنجاح",
+        "MessageEn": "Successful Loaded Available Trip",
+        "Code": 200,
+        "Data": [
+            {
+                "IdTrip": 1,
+                "SeatsData": {
+                    "1": true,
+                    "2": false
+                },
+                "Reservation_Date": "2022-05-15",
+                "TimeStartTime": "18:00:00",
+                "IdWorkingHour": 1,
+                "IdStartPath": 1,
+                "IdEndPath": 2,
+                "IdStartCity": "1",
+                "IdEndCity": "4"
+            }
+        ]
+    }
+
+here he have one place Chair Number 1 only
+
+
+
+## Booking in Trip
+To Book In Certain Trip
+### Request
+    
+    curl --location --request POST 'http://127.0.0.1:5050/api/reservation' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer 2|dC9tnqrZsoGXddxx8xnHt9GEn8EaWnWCVtwEVMGa' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+    			"IdTrip" : 1,
+                "IdWorkingHour" : 1,
+                "IdStartPath" : 1,
+                "IdEndPath" : 2,
+                "Date": "2022-05-15",
+                "SeatNumber": 2,
+                "IdStartCity":1,
+                "IdEndCity":4
+    
+    }'
+
+### Response
+    {
+        "MessageAr": "تم التسجيل في الرحلة بنجاح",
+        "MessageEn": "Successful Reservation",
+        "Code": 201
+    }
+    
+    
+
+
+
+
+
+#  Testing 
+
+
+
+## The ReservationTest 
+has Some Setup
+
+### Setup DataBase
+
+`1- Create User `
+
+    mm@mm.com', 'password' => '123456
+
+`2- Login With This User`
+    
+    ['password' => '123456', 'email' => 'mm@mm.com']);
+
+
+`3- Create Bus With 3 Seats Only`
+    
+    Bus::create([
+                'DriverName' => 'Mario',
+                'VehicleRegistrationPlate' => '199-AQW',
+                'AvailableSeats' => '3',
+            ]);
+
+`4- Create Trip From Cairo To Asyut`
+    
+    Trip::create([
+                'TripName' => 'Cairo-Asyut',
+                'IdBus' => $this->bus->IdBus,
+            ]);
+
+`5- Create Path For This Trip`
+           
+           Cairo -------> Giza -------> Alfayum -------> AlMinya -------> Asyut 
+           $cities_ids = [1, 2, 4, 5, 6]; 
+           foreach ($cities_ids as $id) {
+                //$cities_ids
+                $lastTripPath = $newTripPath;
+                $newTripPath = TripPath::create([
+                    'IdTrip' => $this->trip->IdTrip,
+                    'IdCity' => $id,
+                    'NextIdTripPath' => null,
+                    'Order' => $order,
+                ]);
+                if ($lastTripPath != null) {
+                    $lastTripPath->NextIdTripPath = $newTripPath->IdTripPath;
+                    $lastTripPath->save();
+                }
+                $order += 1;
+            }
+
+`6- Create Working Hour For This Trip Every Day 8 Pm To 10 Pm`
+    
+    $workingHours=[];
+            for ($i = 0; $i <= 6; $i++) {
+              array_push($workingHours,WorkingHour::create([
+                  'IdTrip' => $this->trip->IdTrip, 'DayOfWeek' => $i, 'TripStatringTime' => '20:00:00', 'TripEndingTime' => '22:00:00'
+              ]));
+            }
+
+`7- Create 10 User For Reverstaion`
+    
+    $user_count = 10;
+            for ($i = 0; $i < $user_count; $i++) {
+                array_push($this->users, User::create([
+                    'name' => "test_user$i",
+                    'password' => Hash::make('123456'),
+                    'email' => "test_mail$i@mario.com",
+                ]));
+            }
+
+
+`8- Create 3 Reservation For This Trip` 
+    
+    
+    // 1- From Cairo  to Giza
+    // 2- From Cairo to AlFayyum
+    // 3- from Cairo To Alminya
+            $headers = [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $this->token
+            ];
+            $counter=0;
+            {
+                $response = $this->get("/api/availableTrip/".ConstantsCity::Cairo.'/'.ConstantsCity::Giza.'/'.$this->tested_date, $headers);
+                $response=$response->decodeResponseJson()["Data"][0];
+    
+                Reservation::create([
+                    'IdBus' => $this->trip->IdBus,
+                    'IdTrip' => $this->trip->IdTrip,
+                    'IdPathTripStart' => $response['IdStartPath'],
+                    'IdPathTripEnd' => $response['IdEndPath'],
+                    'BusLocation' => "#1",
+                    'IdWorkingHour' => $response['IdWorkingHour'],
+                    'ReservationDate' => $this->tested_date,
+                    'IdUser' => $this->users[$counter%$user_count]->IdUser
+                ]);
+                $counter+=1;
+            }
+            {
+                $response = $this->get("/api/availableTrip/".ConstantsCity::Cairo.'/'.ConstantsCity::Alfayum.'/'.$this->tested_date, $headers);
+                $response=$response->decodeResponseJson()["Data"][0];
+    
+                Reservation::create([
+                    'IdBus' => $this->trip->IdBus,
+                    'IdTrip' => $this->trip->IdTrip,
+                    'IdPathTripStart' => $response['IdStartPath'],
+                    'IdPathTripEnd' => $response['IdEndPath'],
+                    'BusLocation' => "#2",
+                    'IdWorkingHour' => $response['IdWorkingHour'],
+                    'ReservationDate' => $this->tested_date,
+                    'IdUser' => $this->users[$counter%$user_count]->IdUser
+                ]);
+                $counter+=1;
+            }
+            {
+                $response = $this->get("/api/availableTrip/".ConstantsCity::Cairo.'/'.ConstantsCity::AlMinya.'/'.$this->tested_date, $headers);
+                $response=$response->decodeResponseJson()["Data"][0];
+    
+                Reservation::create([
+                    'IdBus' => $this->trip->IdBus,
+                    'IdTrip' => $this->trip->IdTrip,
+                    'IdPathTripStart' => $response['IdStartPath'],
+                    'IdPathTripEnd' => $response['IdEndPath'],
+                    'BusLocation' => "#3",
+                    'IdWorkingHour' => $response['IdWorkingHour'],
+                    'ReservationDate' => $this->tested_date,
+                    'IdUser' => $this->users[$counter%$user_count]->IdUser
+                ]);
+                $counter+=1;
+            }
+            
+            
+`8- then Run 3 Test`
+    
+    after the 3 Reversation 
+       // 1- From Cairo  to Giza
+        // 2- From Cairo to AlFayyum
+        // 3- from Cairo To Alminya
+        
+    [test_cairo_Asyut] this must return all seats flase -> "SeatsData":{"1":false,"2":false,"3":false}
+    [test_giza_alfayyum] the first user will leave on giza so can book form giza to fayum on seats number 1 -> "SeatsData":{"1":true,"2":false,"3":false}
+    
+    [test_cairo_alminya] this must return all seats flase -> "SeatsData":{"1":false,"2":false,"3":false}
+
+
+
+#  You Can See Setup Step On Console
+    ![Alt text](readme/console.png)

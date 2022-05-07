@@ -139,14 +139,18 @@ class ReservationController extends Controller
 
             return BaseMessage::someThingWrong();
         }
+
         $reservation = null;
         try {
-            $available_trips=$this->availableTrip($request->input('IdStartCity'),$request->input('IdEndCity'),$request->input('Date'));
+            $available_trips=($this->availableTrip($request->input('IdStartCity'),$request->input('IdEndCity'),$request->input('Date')));
+            $available_trips= json_decode($available_trips->getContent(),true);
+
             $seat_number=$request->input('SeatNumber');
-            if(count($available_trips)==0)
+
+            if(count($available_trips['Data'])==0)
                 return (new BaseMessage("This Trip Not have Working Hour Now", "هذة الرحلة غير متاحة حاليا", 405))->toJson();
 
-            foreach ($available_trips as $tp){
+            foreach ($available_trips["Data"] as $tp){
 
                 if($tp["IdTrip"]==$request->input('IdTrip') && $tp["IdWorkingHour"]==$request->input('IdWorkingHour')&& $tp["IdWorkingHour"]==$request->input('IdWorkingHour')){
                     if(!array_key_exists($seat_number,$tp["SeatsData"]))
@@ -173,7 +177,7 @@ class ReservationController extends Controller
                 }
             }
         } catch (\Throwable $e) {
-
+            return $e->getMessage();
             return BaseMessage::someThingWrong();
         }
 
