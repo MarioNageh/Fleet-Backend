@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusController;
+use App\Http\Controllers\CityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get("city",[CityController::class,'getAllCities']);
     ///////////////////////////////////
     Route::get("bus",[BusController::class,'getAllBuses']);
+
+
 
 });
