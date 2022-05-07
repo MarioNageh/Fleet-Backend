@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TripController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,5 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get("tripPath/{id}",[TripController::class,'getTripPath']);
     Route::get("tripWorkingHour/{id}",[TripController::class,'tripWorkingHour']);
     ///////////////////////////////////
+    Route::get("availableTrip/{startCityId}/{endCityId}/{date}",[ReservationController::class,'availableTrip']);
+    Route::post("reservation",[ReservationController::class,'reservationNewTrip']);
+    Route::get("myreservations",[ReservationController::class,'getAllReservations']);
 
 });

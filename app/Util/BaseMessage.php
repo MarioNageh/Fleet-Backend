@@ -34,9 +34,9 @@ class BaseMessage
         return $baseMessage->toJson();
     }
 
-    public function toJson()
+    public function toJson($isArray=false)
     {
-        if( gettype($this->data)=="object")
+        if( gettype($this->data)=="object" || $isArray)
         return response()->json(array_merge([
             'MessageAr' => $this->messageAr,
             'MessageEn' => $this->messageEn,
